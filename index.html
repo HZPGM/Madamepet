@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madame Pet - Venda de Filhotes e Hotelaria</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+  <style>
+    :root { --primary:#E91E63; --hero-bg:#ffc0cb; --white:#fff; --accent-blue:#2196F3; --text:#333; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body {width:100%;overflow-x:hidden;scroll-behavior:smooth;}
+    body {font-family:Arial,sans-serif; color:var(--text); background: var(--hero-bg); line-height:1.6;}
+    a {text-decoration:none; color:inherit;}
+    /* Navbar */
+    .navbar { display:flex; justify-content:center; align-items:center; background:var(--primary); padding:1rem 2rem; position:sticky; top:0; z-index:1000; }
+    .navbar ul { display:flex; list-style:none; gap:2rem; }
+    .navbar a { color:var(--white); font-weight:500; padding:0.5rem; }
+    .toggle { display:none; font-size:1.5rem; color:var(--white); cursor:pointer; margin-left:auto; }
+    /* Side Menu */
+    .side-menu { position:fixed; top:0; right:-250px; width:250px; height:100%; background:var(--primary); flex-direction:column; padding:1rem; transition:right 0.3s ease; }
+    .side-menu.active { right:0; }
+    .side-menu .close-btn { align-self:flex-end; font-size:1.5rem; color:var(--white); cursor:pointer; }
+    .side-menu ul { list-style:none; margin-top:2rem; display:flex; flex-direction:column; gap:1rem; }
+    .side-menu a { color:var(--white); font-size:1.1rem; }
+        /* Responsive */
+    @media (min-width: 769px) {
+      /* Desktop: always show menu, hide hamburger */
+      .navbar ul { display: flex !important; }
+      .toggle { display: none !important; }
+    }
+    @media (max-width:768px) {
+      .navbar ul { display: none; }
+      .toggle { display: block; }
+    }
+    @media(max-width:768px) {
+      .navbar ul { display:none; }
+      .toggle { display:block; }
+    }
+    /* Hero */
+    .hero { background:var(--hero-bg); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#fff; padding:4rem 1rem; }
+    .hero-logo { width:300px; margin-bottom:1rem; }
+    .hero h1, .hero p { text-shadow:2px 2px 4px rgba(0,0,0,0.3), -2px -2px 4px rgba(255,255,255,0.3); }
+    .hero h1 { font-size:3rem; margin-bottom:0.5rem; }
+    .hero p { font-size:1.25rem; margin-bottom:1.5rem; }
+    .btn { display:inline-block; padding:1rem 2rem; background:var(--white); color:var(--primary); border-radius:5px; transition:background 0.3s; font-weight:bold; }
+    .btn:hover { background:var(--accent-blue); color:var(--white); }
+    /* Hotelaria */
+    .hotel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background: var(--hero-bg);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hotel-card { background:var(--white); border:1px solid var(--hero-bg); border-radius:8px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .hotel-card img { width:100%; height:220px; object-fit:cover; }
+    .hotel-card .card-body { padding:1rem; }
+    .hotel-card h3 { margin-bottom:0.5rem; font-size:1.3rem; color:var(--primary); }
+    .hotel-card ul { list-style:disc; margin:0 0 1rem 1.5rem; font-size:1rem; }
+    .hotel-card .btn { display:block; width:100%; padding:0.75rem; background:var(--primary); color:var(--white); border:none; border-radius:5px; text-align:center; font-weight:bold; }
+    .hotel-card .btn:hover { background:var(--accent-blue); }
+    /* Filhotes */
+    .puppy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      background: var(--hero-bg);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .puppy-card { background:var(--white); border:1px solid var(--hero-bg); border-radius:8px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .puppy-card img { width:100%; height:220px; object-fit:cover; }
+    .puppy-card .card-body { padding:1rem; }
+    .puppy-card h3 { margin-bottom:0.5rem; font-size:1.3rem; color:var(--primary); }
+    .puppy-card p { margin-bottom:1rem; font-size:1rem; }
+    .puppy-card .btn { display:block; width:100%; padding:0.75rem; background:var(--primary); color:var(--white); border:none; border-radius:5px; text-align:center; font-weight:bold; }
+    .puppy-card .btn:hover { background:var(--accent-blue); }
+    /* Sobre Nós */
+    .about-content { max-width:700px; margin:0 auto; text-align:center; font-size:1rem; line-height:1.6; color:var(--white); padding:3rem 2rem; background:var(--hero-bg); }
+    .about-content p { margin-bottom:1rem; }
+    .about-img { width:80%; max-width:350px; margin:1rem auto; border-radius:8px; }
+    .about-img-row { display:flex; justify-content:center; gap:0.75rem; margin-top:1rem; }
+    .about-img-row .about-img { width:45%; max-width:200px; }
+    /* Contato */
+    .contact-form {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 3rem 2rem;
+      background: var(--hero-bg);
+      /* Removido flex para layout padrão */
+    }
+    .contact-form h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .contact-form form {
+      width: 100%;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .contact-form button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+    .contact-form button:hover {
+      background: var(--accent-blue);
+    }
+    .contact-form form {
+      width: 100%;
+      max-width: 500px;
+    }
+    .contact-form input, .contact-form textarea { width:100%; padding:0.75rem; margin-bottom:1rem; border:none; border-radius:5px; font-size:1rem; }
+    .contact-form button { width:100%; padding:0.75rem; background:var(--primary); color:var(--white); border:none; border-radius:5px; font-weight:bold; cursor:pointer; }
+    .contact-form button:hover { background:var(--accent-blue); }
+    /* WhatsApp */
+    .whatsapp-float { position:fixed; width:60px; height:60px; bottom:20px; right:20px; background-color:#25D366; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; z-index:1000; }
+      .section-title {
+      text-align: center;
+      color: var(--white);
+    
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3), -2px -2px 4px rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#hotelaria">Hotelaria</a></li>
+      <li><a href="#filhotes">Filhotes</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <div class="toggle"><i class="fas fa-bars"></i></div>
+  </nav>
+  <div class="side-menu" id="side-menu">
+    <div class="close-btn" id="close-btn"><i class="fas fa-times"></i></div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#hotelaria">Hotelaria</a></li>
+      <li><a href="#filhotes">Filhotes</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </div>
+
+  <section id="home" class="hero">
+    <img src="logo.png" alt="Logo Madame Pet" class="hero-logo">
+    <h1>Bem-vindo a Madame Pet</h1>
+    <p>Seu portal de filhotes e hotelaria de confiança</p>
+    <a href="#hotelaria" class="btn">Conheça nosso Hotelaria</a>
+  </section>
+
+  <section id="hotelaria">
+    <h2 class="section-title">Hotelaria Canina</h2>
+    <div class="hotel-grid">
+    <div class="hotel-card">
+      <img src="hotel1.jpg" alt="Sucite Premium">
+      <div class="card-body">
+        <h3>Suíte Premium</h3>
+        <ul>
+          <li>Alojamento individual</li>
+          <li>Alimentação personalizada</li>
+          <li>Área de recreação</li>
+        </ul>
+        <button class="btn">Reservar Agora</button>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <img src="hotel2.jpg" alt="Quarto Luxo">
+      <div class="card-body">
+        <h3>Quarto Luxo</h3>
+        <ul>
+          <li>Câmeras 24h</li>
+          <li>Serviço de banho</li>
+          <li>Cama ortopédica</li>
+        </ul>
+        <button class="btn">Reservar Agora</button>
+      </div>
+        </div>
+  </section>
+
+  <section id="filhotes">
+    <h2 class="section-title">Filhotes Disponíveis</h2>
+    <div class="puppy-grid">
+    <div class="puppy-card">
+      <img src="puppy1.jpg" alt="Labrador Retriever">
+      <div class="card-body">
+        <h3>Labrador Retriever</h3>
+        <p>R$ 2.500</p>
+        <button class="btn">Quero Saber Mais</button>
+      </div>
+    </div>
+    <div class="puppy-card">
+      <img src="puppy2.jpg" alt="Golden Retriever">
+      <div class="card-body">
+        <h3>Golden Retriever</h3>
+        <p>R$ 2.800</p>
+        <button class="btn">Quero Saber Mais</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" class="about-content">
+    <h2 class="section-title">Sobre Nós</h2>
+    <p>Na Madame Pet, oferecemos filhotes saudáveis e um serviço de hotelaria canina de alta qualidade. Nossa equipe é formada por amantes de animais, garantindo conforto e segurança para seu pet.</p>
+    <p>Darley Zauro, fundadora da Madame Pet, é apaixonada por animais desde a infância e dedica sua experiência em adestramento e cuidados veterinários para garantir o bem-estar de cada hóspede e filhote.</p>
+    <img src="cropped_image_2.jpeg" alt="Equipe Madame Pet" class="about-img">
+    <div class="about-img-row">
+      <img src="cropped_image_1.jpeg" alt="Golden Retriever no jardim" class="about-img">
+      <img src="WhatsApp Image 2025-07-08 at 08.09.57.jpeg" alt="Filhotes Chihuahua" class="about-img">
+    </div>
+  </section>
+
+  <section id="contato" class="contact-form">
+    <h2 class="section-title">Contato</h2>
+    <form action="#">
+      <input type="text" name="nome" placeholder="Nome" required>
+      <input type="tel" name="telefone" placeholder="Telefone" required>
+      <textarea name="mensagem" rows="4" placeholder="Mensagem" required></textarea>
+      <button class="btn" type="submit">Enviar</button>
+      <p id="success-msg" style="display:none;color:#fff;background:#4CAF50;padding:.75rem;border-radius:5px;margin-top:1rem;">Mensagem enviada com sucesso!</p>
+    </form>
+  </section>
+
+  <script>
+    const toggle = document.querySelector('.toggle');
+    const sideMenu = document.getElementById('side-menu');
+    const closeBtn = document.getElementById('close-btn');
+    toggle.addEventListener('click', () => sideMenu.classList.add('active'));
+    closeBtn.addEventListener('click', () => sideMenu.classList.remove('active'));
+    document.querySelectorAll('.side-menu a').forEach(link => link.addEventListener('click', () => sideMenu.classList.remove('active')));
+    const form = document.querySelector('.contact-form form');
+    const successMsg = document.getElementById('success-msg');
+    form.addEventListener('submit', e => { e.preventDefault(); successMsg.style.display='block'; form.reset(); setTimeout(()=> successMsg.style.display='none',5000); });
+  </script>
+
+  <a href="https://api.whatsapp.com/send?phone=5515997413633" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+</body>
+</html>
